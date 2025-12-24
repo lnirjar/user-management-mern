@@ -12,7 +12,7 @@ cd frontend
 npm run dev
 ```
 
-Sample `.env`
+Sample `.env` for `backend/.env`
 
 ```
 MONGO_URI=
