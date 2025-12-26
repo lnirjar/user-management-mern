@@ -5,7 +5,7 @@ export const LogoutButton = ({ onLogout }: { onLogout: () => void }) => {
   const navigate = useNavigate();
 
   const onClick = async () => {
-    const data = await axios.get("/api/logout");
+    const data = await axios.get("/api/auth/logout");
     console.log(data);
     onLogout();
     navigate("/login");

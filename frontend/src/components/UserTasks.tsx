@@ -32,7 +32,11 @@ export const UserTasks = () => {
         </h2>
         <div className="pb-10 space-y-4">
           {tasks?.map((task) => (
-            <TaskCard key={task._id.toString()} task={task} />
+            <TaskCard
+              key={task._id.toString()}
+              task={task}
+              hideEditButton={true}
+            />
           ))}
         </div>
       </div>

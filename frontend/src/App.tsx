@@ -19,7 +19,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await axios.get("/api/dashboard");
+      const data = await axios.get("/api/user");
       setData(data?.data?.user ?? null);
       setLoading(false);
     };
@@ -28,7 +28,7 @@ function App() {
 
   const fetchData = useCallback(() => {
     const fetchData = async () => {
-      const data = await axios.get("/api/dashboard");
+      const data = await axios.get("/api/user");
       setData(data?.data?.user ?? null);
       setLoading(false);
     };

@@ -10,7 +10,7 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = await axios.post("/api/login", {
+    const data = await axios.post("/api/auth/login", {
       email,
       password,
     });
