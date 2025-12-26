@@ -1,27 +1,25 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "../models/user.js";
+import { generateJwtToken } from "../utils/token.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
   if (!name) {
-    return res.status(401).json({ message: "Name is reqired" });
+    return res.status(400).json({ message: "Name is reqired" });
   }
   if (!email) {
-    return res.status(401).json({ message: "Email is reqired" });
+    return res.status(400).json({ message: "Email is reqired" });
   }
   if (!password) {
-    return res.status(401).json({ message: "Password is reqired" });
+    return res.status(400).json({ message: "Password is reqired" });
   }
 
   const hash = await bcrypt.hash(password, 10);
 
   const user = await User.create({ name, email, password: hash });
 
-  const token = jwt.sign(
-    { userId: user._id.toString() },
-    process.env.JWT_SECRET
-  );
+  const token = generateJwtToken({ userId: user._id.toString() });
 
   res.cookie("jwt_token", token);
   res.status(201).json({ user });
@@ -31,10 +29,10 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email) {
-    return res.status(401).json({ message: "Email is reqired" });
+    return res.status(400).json({ message: "Email is reqired" });
   }
   if (!password) {
-    return res.status(401).json({ message: "Password is reqired" });
+    return res.status(400).json({ message: "Password is reqired" });
   }
 
   const user = await User.findOne({ email }).exec();
@@ -49,10 +47,7 @@ export const login = async (req, res) => {
     return res.status(401).json({ message: "Invalid email or password" });
   }
 
-  const token = jwt.sign(
-    { userId: user._id.toString() },
-    process.env.JWT_SECRET
-  );
+  const token = generateJwtToken({ userId: user._id.toString() });
 
   res.cookie("jwt_token", token);
   res.status(200).json({ user });
