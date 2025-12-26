@@ -1,13 +1,16 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../redux/hooks";
+import { authActions } from "../redux/authSlice";
 
-export const LogoutButton = ({ onLogout }: { onLogout: () => void }) => {
+export const LogoutButton = () => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const onClick = async () => {
     const data = await axios.get("/api/auth/logout");
     console.log(data);
-    onLogout();
+    dispatch(authActions.setUser(null));
     navigate("/login");
   };
 

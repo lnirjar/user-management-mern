@@ -1,56 +1,29 @@
+import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
+
 import { Dashboard } from "./components/Dashboard";
 import { LoginForm } from "./components/LoginForm";
 import { RegisterForm } from "./components/RegisterForm";
 import { Navbar } from "./components/Navbar";
-import { useCallback, useEffect, useState } from "react";
-import axios from "axios";
 import { CreateTaskForm } from "./components/createTaskForm";
 import { EditTaskForm } from "./components/EditTaskForm";
 import { UserTasks } from "./components/UserTasks";
 
+import { useUserDataQuery } from "./hooks/useUserDataQuery";
+
 function App() {
-  const [data, setData] = useState<{
-    name: string;
-    email: string;
-    role: "admin" | "member";
-  } | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { fetchData } = useUserDataQuery();
 
   useEffect(() => {
-    const fetchData = async () => {
-      const data = await axios.get("/api/user");
-      setData(data?.data?.user ?? null);
-      setLoading(false);
-    };
     fetchData();
-  }, []);
-
-  const fetchData = useCallback(() => {
-    const fetchData = async () => {
-      const data = await axios.get("/api/user");
-      setData(data?.data?.user ?? null);
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
+  }, [fetchData]);
 
   return (
     <div>
-      <Navbar isLoggedIn={!!data} onLogout={() => setData(null)} />
+      <Navbar />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Dashboard data={data} loading={loading} fetchData={fetchData} />
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            <Dashboard data={data} loading={loading} fetchData={fetchData} />
-          }
-        />
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<RegisterForm />} />
         <Route path="/login" element={<LoginForm />} />
         <Route path="/create-task" element={<CreateTaskForm />} />

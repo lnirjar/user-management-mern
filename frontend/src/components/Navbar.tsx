@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
 import { LogoutButton } from "./LogoutButton";
+import { useAppSelector } from "../redux/hooks";
 
-export const Navbar = ({
-  isLoggedIn,
-  onLogout,
-}: {
-  isLoggedIn: boolean;
-  onLogout: () => void;
-}) => {
+export const Navbar = () => {
+  const user = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="w-full p-4 flex justify-end items-center gap-4">
-      {!isLoggedIn && (
+      {!user && (
         <>
           <Link
             to="/login"
@@ -28,7 +25,7 @@ export const Navbar = ({
         </>
       )}
 
-      {isLoggedIn && (
+      {user && (
         <>
           <Link to="/dashboard" className="p-2">
             Dashboard
@@ -39,7 +36,7 @@ export const Navbar = ({
           >
             Create Task
           </Link>
-          <LogoutButton onLogout={onLogout} />
+          <LogoutButton />
         </>
       )}
     </div>
