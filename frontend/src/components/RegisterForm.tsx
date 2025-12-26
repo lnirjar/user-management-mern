@@ -2,11 +2,13 @@ import { useState } from "react";
 import { FormField } from "./FormField";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import type { User } from "../constants";
 
 export const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<User["role"]>("member");
 
   const navigate = useNavigate();
 
@@ -16,6 +18,7 @@ export const RegisterForm = () => {
       name,
       email,
       password,
+      role,
     });
     console.log(data);
 
@@ -35,6 +38,31 @@ export const RegisterForm = () => {
               value={password}
               setValue={setPassword}
             />
+            <div className="grid grid-cols-2">
+              <div>Role</div>
+              <div>
+                <div>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="member"
+                    checked={role === "member"}
+                    onChange={() => setRole("member")}
+                  />{" "}
+                  <span>Member</span>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="role"
+                    value="admin"
+                    checked={role === "admin"}
+                    onChange={() => setRole("admin")}
+                  />{" "}
+                  <span>Admin</span>
+                </div>
+              </div>
+            </div>
             <button
               className="bg-gray-800 text-white p-2 rounded-sm"
               type="submit"
